@@ -8,31 +8,31 @@
 NewPing sonar_01(TRIG_PIN_01, ECHO_PIN_01, MAX_DIST_01);
  
 Servo servo1;
-static int position1 = 0;
-static int radar[18];
-static int radarpos = 0;
-static int distance;
+int position1 = 0;
+int radar[18];
+int radarpos = 0;
+int distance;
  
-static char richtung = 'x';
-static int led1 = 12;
-static int led2 = 13;
+char richtung = 'x';
+const int led1 = 12;
+const int led2 = 13;
  
 //Reifenansteuerrung
-static int reifenkontrolle_1_01 = 8;
-static int reifenkontrolle_1_02 = 7;
-static int ena = 5;
-static int reifenkontrolle_2_03 = 4;
-static int reifenkontrolle_2_04 = 2;
-static int enb = 6;
-static int Geschwindigkeit_reifen_01 = 200;
-static int Geschwindigkeit_riefen_02 = 200;
-static int Areal_Links = 0;  
-static int Areal_Mitte = 0;
-static int Areal_Rechts = 0;
+const int reifenkontrolle_1_01 = 8;
+const int reifenkontrolle_1_02 = 7;
+const int ena = 5;
+const int reifenkontrolle_2_03 = 4;
+const int reifenkontrolle_2_04 = 2;
+const int enb = 6;
+const int Geschwindigkeit_reifen_01 = 200;
+const int Geschwindigkeit_riefen_02 = 200;
+const int Areal_Links = 0;  
+const int Areal_Mitte = 0;
+const int Areal_Rechts = 0;
  
-static int modus = 0; // Manuelle eingabe nötig 1 / 0
+int modus = 0; // Manuelle eingabe nötig 1 / 0
  
-static void setup(){
+void setup(){
   servo1.attach(9);
   Serial.begin(9600);
  
@@ -47,7 +47,7 @@ static void setup(){
  
 }
  
-static void loop(){
+void loop(){
   if(modus == 0){
     //Automatisch Gesteuertes Programm
     Scan();
@@ -81,7 +81,7 @@ static void loop(){
  
 }
  
-static void Scan(){
+void Scan(){
   // Servo fuer Radar Steuerrung
   while (position1 < 180)
   {
@@ -105,7 +105,7 @@ static void Scan(){
   }
 }
  
-static void Areal_Bestimmung(){
+void Areal_Bestimmung(){
   //Berechnung Lenkung
  
  Areal_Rechts = 255;
@@ -129,7 +129,7 @@ static void Areal_Bestimmung(){
     }
 }
  
-static void Richtung_Bestimmung(){
+void Richtung_Bestimmung(){
   if (Areal_Mitte <= 20 && Areal_Rechts <= 40 && Areal_Links <= 40){
     richtung = 'b';
   }  
@@ -147,7 +147,7 @@ static void Richtung_Bestimmung(){
   }
 }
  
-static void Fahrt(){
+void Fahrt(){
   if (richtung == 'v'){
     Serial.println("Vorwärts");
     digitalWrite(led1, HIGH);
@@ -184,7 +184,7 @@ static void Fahrt(){
   Stopp(0);
 }
  
-static void Vorwaerts(int x, int y){
+void Vorwaerts(int x, int y){
   analogWrite(ena, y*2.25);
   analogWrite(enb, y*2.55);
   digitalWrite(reifenkontrolle_1_01, LOW);
@@ -194,7 +194,7 @@ static void Vorwaerts(int x, int y){
   delay(x);
 }
  
-static void Rechts(int x, int y){
+void Rechts(int x, int y){
   analogWrite(ena, y*2.25);
   analogWrite(enb, y*2.55);
   digitalWrite(reifenkontrolle_1_01, HIGH);
@@ -204,7 +204,7 @@ static void Rechts(int x, int y){
   delay(x);
 }
  
-static void Links(int x, int y){
+void Links(int x, int y){
   analogWrite(ena, y*2.25);
   analogWrite(enb, y*2.55);
   digitalWrite(reifenkontrolle_1_01, LOW);
@@ -214,7 +214,7 @@ static void Links(int x, int y){
   delay(x);
 }
  
-static void Rueckwaerts(int x, int y){
+void Rueckwaerts(int x, int y){
   analogWrite(ena, y*2.25);
   analogWrite(enb, y*2.55);
   digitalWrite(reifenkontrolle_1_01, HIGH);
@@ -224,7 +224,7 @@ static void Rueckwaerts(int x, int y){
   delay(x);
 }
  
-static void Stopp(int x){
+void Stopp(int x){
   digitalWrite(reifenkontrolle_1_01, LOW);
   digitalWrite(reifenkontrolle_1_02, LOW);
   digitalWrite(reifenkontrolle_2_03, LOW);
@@ -232,53 +232,18 @@ static void Stopp(int x){
   delay(x);
 }
  
-static void Serial_Output(){
-  Serial.println(" ");
-  Serial.println("Areal_Rechts:");
-  Serial.print(radar[0]);
-  Serial.print(", ");
-  Serial.print(radar[1]);
-  Serial.print(", ");
-  Serial.print(radar[2]);
-  Serial.print(", ");
-  Serial.print(radar[3]);
-  Serial.print(", ");
-  Serial.print(radar[4]);
-  Serial.print(", ");
-  Serial.print(radar[5]);
-  Serial.print(", ");
-  Serial.println(" ");
-  Serial.println("Areal_Mitte");
-  Serial.print(radar[6]);
-  Serial.print(", ");
-  Serial.print(radar[7]);
-  Serial.print(", ");
-  Serial.print(radar[8]);
-  Serial.print(", ");
-  Serial.print(radar[9]);
-  Serial.print(", ");
-  Serial.print(radar[10]);
-  Serial.print(", ");
-  Serial.print(radar[11]);
-  Serial.print(", ");
-  Serial.println(" ");
-  Serial.println("Areal_Links:");
-  Serial.print(radar[12]);
-  Serial.print(", ");
-  Serial.print(radar[13]);
-  Serial.print(", ");
-  Serial.print(radar[14]);
-  Serial.print(", ");
-  Serial.print(radar[15]);
-  Serial.print(", ");
-  Serial.print(radar[16]);
-  Serial.print(", ");
-  Serial.println(radar[17]);
-  Serial.println("");
-  Serial.println("");
-  Serial.println("");
-  Serial.println("");
-  Serial.println("");
+void Serial_Output() {
+  const char* labels[] = {"Areal_Rechts", "Areal_Mitte", "Areal_Links"};
+  
+  for (int i = 0; i < 3; i++) {
+    Serial.print(labels[i]);
+    Serial.println(":");
+    
+    for (int j = 0; j < 6; j++) {
+      Serial.print(radar[i * 6 + j]);
+      if (j < 5) Serial.print(", ");
+    }
+    Serial.println("\n");
+  }
+  Serial.print("\n\n");
 }
- 
- 
