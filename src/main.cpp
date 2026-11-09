@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include <Servo.h>
 #include <NewPing.h>
  
@@ -26,11 +27,22 @@ const int reifenkontrolle_2_04 = 2;
 const int enb = 6;
 const int Geschwindigkeit_reifen_01 = 200;
 const int Geschwindigkeit_riefen_02 = 200;
-const int Areal_Links = 0;  
-const int Areal_Mitte = 0;
-const int Areal_Rechts = 0;
+int Areal_Links = 0;  
+int Areal_Mitte = 0;
+int Areal_Rechts = 0;
  
 int modus = 0; // Manuelle eingabe nötig 1 / 0
+
+void Scan();
+void Areal_Bestimmung();
+void Richtung_Bestimmung();
+void Fahrt();
+void Vorwaerts(int x, int y);
+void Rechts(int x, int y);
+void Links(int x, int y);
+void Rueckwaerts(int x, int y);
+void Stopp(int x);
+void Serial_Output();
  
 void setup(){
   servo1.attach(9);
